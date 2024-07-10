@@ -6,6 +6,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>New Year Celebration</title>
     <style>
+        /* Add styles for the text input */
+        .name {
+            width: 100%;
+            padding: 10px;
+            font-size: 1.5em;
+            margin-top: 1em;
+            background-color: transparent;
+            border: none;
+            border-bottom: 2px solid #ffdd57;
+            color: #ffdd57;
+            text-align: center;
+            outline: none;
+            /* Remove default focus outline */
+        }
+
+        .name::placeholder {
+            color: #ffdd57;
+            opacity: 0.7;
+            /* Placeholder opacity */
+        }
+
+        .name:focus {
+            border-bottom: 2px solid #ffd700;
+            /* Yellowish focus border */
+        }
+
+        /* Rest of your existing styles */
         body {
             display: flex;
             justify-content: center;
@@ -96,22 +123,17 @@
 
         .increasing-size {
             font-size: 2rem;
-            /* Initial font size */
             display: inline-block;
-            /* Ensures inline display */
             animation: increaseSize 2s forwards;
-            /* Apply animation */
         }
 
         @keyframes increaseSize {
             from {
                 font-size: 2rem;
-                /* Initial font size */
             }
 
             to {
                 font-size: 3rem;
-                /* Final font size */
             }
         }
     </style>
@@ -119,6 +141,7 @@
 
 <body>
     <div class="container">
+        <input class="name" type="text" placeholder="enter your name">
         <h1 class="toggleElement" id="birthdayMessage">happy birthday!
             <div class="increasing-size">ANISA</div> 🎉
         </h1>
@@ -154,20 +177,28 @@
 
         function toggleMusicAndConfetti() {
             const button = document.querySelector('.button');
+            const inputName = document.querySelector('.name');
+            const name = inputName.value.trim().toLowerCase();
 
-            if (isPlaying) {
-                audio.pause();
-                clearInterval(confettiInterval);
-                document.querySelectorAll('.confetti').forEach(el => el.remove());
-                button.textContent = 'play';
+            if (name === 'anisa') {
+                if (isPlaying) {
+                    audio.pause();
+                    clearInterval(confettiInterval);
+                    document.querySelectorAll('.confetti').forEach(el => el.remove());
+                    button.textContent = 'play';
+                    inputName.style.display = 'block';
+                } else {
+                    audio.play();
+                    confettiInterval = setInterval(createConfetti, 100);
+                    button.textContent = 'pause';
+                    message.style.display = 'block';
+                    image.style.display = 'block';
+                    inputName.style.display = 'none';
+                }
+                isPlaying = !isPlaying;
             } else {
-                audio.play();
-                confettiInterval = setInterval(createConfetti, 100);
-                button.textContent = 'pause';
-                message.style.display = 'block';
-                image.style.display = 'block';
+                alert("Please enter the name.");
             }
-            isPlaying = !isPlaying;
         }
     </script>
 </body>
