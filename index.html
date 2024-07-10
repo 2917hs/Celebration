@@ -94,9 +94,9 @@
 
 <body>
     <div class="container">
-        <h1>Happy New Year 🎉</h1>
-        <img src="https://via.placeholder.com/300x200.png?text=New+Year+Cake" alt="New Year Cake">
-        <button class="button" onclick="toggleMusicAndConfetti()">Play/Pause Music</button>
+        <h1>happy birthday! HASAN 🎉</h1>
+        <img src="cake.jpg" alt="happy birthday! HASAN">
+        <button class="button" onclick="toggleMusicAndConfetti()">Play</button>
     </div>
 
     <audio id="newYearMusic" src="happy_new_year.mp3" preload="auto"></audio>
@@ -124,13 +124,17 @@
         }
 
         function toggleMusicAndConfetti() {
+            const button = document.querySelector('.button');
+
             if (isPlaying) {
                 audio.pause();
                 clearInterval(confettiInterval);
                 document.querySelectorAll('.confetti').forEach(el => el.remove());
+                button.textContent = 'Play';
             } else {
                 audio.play();
                 confettiInterval = setInterval(createConfetti, 100);
+                button.textContent = 'Pause';
             }
             isPlaying = !isPlaying;
         }
