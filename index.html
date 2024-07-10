@@ -89,23 +89,52 @@
             border-right: 7px solid transparent;
             border-bottom: 14px solid;
         }
+
+        .toggleElement {
+            display: none;
+        }
+
+        .increasing-size {
+            font-size: 2rem;
+            /* Initial font size */
+            display: inline-block;
+            /* Ensures inline display */
+            animation: increaseSize 2s forwards;
+            /* Apply animation */
+        }
+
+        @keyframes increaseSize {
+            from {
+                font-size: 2rem;
+                /* Initial font size */
+            }
+
+            to {
+                font-size: 3rem;
+                /* Final font size */
+            }
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>happy birthday! HASAN 🎉</h1>
-        <img src="cake.jpg" alt="happy birthday! HASAN">
-        <button class="button" onclick="toggleMusicAndConfetti()">Play</button>
+        <h1 class="toggleElement" id="birthdayMessage">happy birthday!
+            <div class="increasing-size">ANISA</div> 🎉
+        </h1>
+        <img class="toggleElement" id="birthdayImage" src="cake.jpg" alt="Happy Birthday! ANISA">
+        <button class="button" onclick="toggleMusicAndConfetti()">surprise</button>
     </div>
 
-    <audio id="newYearMusic" src="bgm.mp3" preload="auto"></audio>
+    <audio id="bgm" src="bgm.mp3" preload="auto"></audio>
     <script>
         let isPlaying = false;
         let confettiInterval;
-        const audio = document.getElementById('newYearMusic');
+        const audio = document.getElementById('bgm');
         const colors = ['#ffdd57', '#ff4500', '#32cd32', '#00bfff', '#ff1493', '#ffd700'];
         const shapes = ['confetti-circle', 'confetti-square', 'confetti-triangle'];
+        var message = document.getElementById('birthdayMessage');
+        var image = document.getElementById('birthdayImage');
 
         function createConfetti() {
             const confettiElement = document.createElement('div');
@@ -130,11 +159,13 @@
                 audio.pause();
                 clearInterval(confettiInterval);
                 document.querySelectorAll('.confetti').forEach(el => el.remove());
-                button.textContent = 'Play';
+                button.textContent = 'play';
             } else {
                 audio.play();
                 confettiInterval = setInterval(createConfetti, 100);
-                button.textContent = 'Pause';
+                button.textContent = 'pause';
+                message.style.display = 'block';
+                image.style.display = 'block';
             }
             isPlaying = !isPlaying;
         }
