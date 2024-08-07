@@ -6,28 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday</title>
     <style>
-        .name {
-            width: 100%;
-            padding: 10px;
-            font-size: 1.5em;
-            margin-top: 1em;
-            background-color: transparent;
-            border: none;
-            border-bottom: 2px solid #ffdd57;
-            color: #ffdd57;
-            text-align: center;
-            outline: none;
-        }
-
-        .name::placeholder {
-            color: #ffdd57;
-            opacity: 0.7;
-        }
-
-        .name:focus {
-            border-bottom: 2px solid #ffd700;
-        }
-
         body {
             display: flex;
             justify-content: center;
@@ -39,6 +17,8 @@
             text-align: center;
             overflow: hidden;
             color: #fff;
+            font-family: Arial, sans-serif;
+            /* Adding a fallback font */
         }
 
         .container {
@@ -46,7 +26,8 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            height: 100%;
+            width: 100%;
         }
 
         h1 {
@@ -56,27 +37,10 @@
         }
 
         img {
-            width: 100%;
-            object-fit: cover;
-            border: 3px solid #ffdd57;
-            background: url(dogg.jpg);
-            background-size: contain;
-            background-repeat: no-repeat
-        }
-
-        .button {
-            width: 100%;
-            padding: 10px;
-            background-color: #ffdd57;
-            color: #1a1a1a;
-            border: none;
+            width: 90%;
+            max-width: 400px;
+            /* Ensure it doesn’t get too large */
             cursor: pointer;
-            font-size: 1.5em;
-            margin-top: 1em;
-        }
-
-        .button:active {
-            background-color: #ffd700;
         }
 
         @keyframes confetti-fall {
@@ -135,27 +99,58 @@
                 font-size: 3rem;
             }
         }
+
+        /* Media Queries for iPhone 11 */
+        @media (max-width: 414px) {
+            h1 {
+                font-size: 2em;
+            }
+
+            .increasing-size {
+                font-size: 1.8rem;
+            }
+
+            img {
+                width: 85%;
+                max-width: 350px;
+            }
+        }
+
+        @media (orientation: landscape) {
+            body {
+                flex-direction: row;
+                justify-content: space-evenly;
+            }
+
+            .container {
+                width: 100%;
+                height: auto;
+            }
+
+            img {
+                width: 70%;
+                max-width: 300px;
+            }
+        }
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1 class="toggleElement" id="birthdayMessage">happy birthday!
+        <h1 class="toggleElement" id="birthdayMessage">Happy Birthday!
             <div class="increasing-size">ANISA</div> 🎉
         </h1>
         <img class="toggleElement" id="birthdayImage" src="cake.jpg" alt="Happy Birthday! ANISA">
-        <button class="button" onclick="toggleMusicAndConfetti();">pause</button>
     </div>
 
-    <audio id="bgm" src="bgm.mp3" preload="auto"></audio>
+    <audio id="bgm" src="bgm.mp3" preload="auto" muted></audio>
     <script>
-        let isPlaying = false;
         let confettiInterval;
         const audio = document.getElementById('bgm');
         const colors = ['#ffdd57', '#ff4500', '#32cd32', '#00bfff', '#ff1493', '#ffd700'];
         const shapes = ['confetti-circle', 'confetti-square', 'confetti-triangle'];
-        var message = document.getElementById('birthdayMessage');
-        var image = document.getElementById('birthdayImage');
+        const message = document.getElementById('birthdayMessage');
+        const image = document.getElementById('birthdayImage');
 
         function createConfetti() {
             const confettiElement = document.createElement('div');
@@ -174,26 +169,32 @@
         }
 
         function toggleMusicAndConfetti() {
-            const button = document.querySelector('.button');
-
-            if (isPlaying) {
+            if (audio.paused) {
+                audio.muted = false;
+                audio.play().catch(error => console.log("Audio playback failed:", error));
+                confettiInterval = setInterval(createConfetti, 100);
+                message.style.display = 'block';
+                image.style.display = 'block';
+            } else {
                 audio.pause();
                 clearInterval(confettiInterval);
                 document.querySelectorAll('.confetti').forEach(el => el.remove());
-                button.textContent = 'play';
-            } else {
-                audio.play();
-                confettiInterval = setInterval(createConfetti, 100);
-                button.textContent = 'pause';
-                message.style.display = 'block';
-                image.style.display = 'block';
             }
-            isPlaying = !isPlaying;
         }
 
         window.onload = function () {
-            toggleMusicAndConfetti();
+            audio.play().catch(error => console.log("Audio playback failed:", error));
+
+            document.addEventListener('click', function () {
+                audio.muted = false;
+                toggleMusicAndConfetti();
+            }, { once: true });
+
+            message.style.display = 'none';
+            image.style.display = 'none';
         };
+
+        image.addEventListener('click', toggleMusicAndConfetti);
     </script>
 </body>
 
