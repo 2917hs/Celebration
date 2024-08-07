@@ -6,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday</title>
     <style>
-        /* Add styles for the text input */
         .name {
             width: 100%;
             padding: 10px;
@@ -18,21 +17,17 @@
             color: #ffdd57;
             text-align: center;
             outline: none;
-            /* Remove default focus outline */
         }
 
         .name::placeholder {
             color: #ffdd57;
             opacity: 0.7;
-            /* Placeholder opacity */
         }
 
         .name:focus {
             border-bottom: 2px solid #ffd700;
-            /* Yellowish focus border */
         }
 
-        /* Rest of your existing styles */
         body {
             display: flex;
             justify-content: center;
@@ -61,8 +56,12 @@
         }
 
         img {
-            max-width: 100%;
-            height: auto;
+            width: 100%;
+            object-fit: cover;
+            border: 3px solid #ffdd57;
+            background: url(dogg.jpg);
+            background-size: contain;
+            background-repeat: no-repeat
         }
 
         .button {
@@ -141,12 +140,11 @@
 
 <body>
     <div class="container">
-        <input class="name" type="text" placeholder="enter your name">
         <h1 class="toggleElement" id="birthdayMessage">happy birthday!
             <div class="increasing-size">ANISA</div> 🎉
         </h1>
         <img class="toggleElement" id="birthdayImage" src="cake.jpg" alt="Happy Birthday! ANISA">
-        <button class="button" onclick="toggleMusicAndConfetti()">surprise</button>
+        <button class="button" onclick="toggleMusicAndConfetti();">pause</button>
     </div>
 
     <audio id="bgm" src="bgm.mp3" preload="auto"></audio>
@@ -177,29 +175,25 @@
 
         function toggleMusicAndConfetti() {
             const button = document.querySelector('.button');
-            const inputName = document.querySelector('.name');
-            const name = inputName.value.trim().toLowerCase();
 
-            if (name === 'anisa') {
-                if (isPlaying) {
-                    audio.pause();
-                    clearInterval(confettiInterval);
-                    document.querySelectorAll('.confetti').forEach(el => el.remove());
-                    button.textContent = 'play';
-                    inputName.style.display = 'block';
-                } else {
-                    audio.play();
-                    confettiInterval = setInterval(createConfetti, 100);
-                    button.textContent = 'pause';
-                    message.style.display = 'block';
-                    image.style.display = 'block';
-                    inputName.style.display = 'none';
-                }
-                isPlaying = !isPlaying;
+            if (isPlaying) {
+                audio.pause();
+                clearInterval(confettiInterval);
+                document.querySelectorAll('.confetti').forEach(el => el.remove());
+                button.textContent = 'play';
             } else {
-                alert("Please enter the name.");
+                audio.play();
+                confettiInterval = setInterval(createConfetti, 100);
+                button.textContent = 'pause';
+                message.style.display = 'block';
+                image.style.display = 'block';
             }
+            isPlaying = !isPlaying;
         }
+
+        window.onload = function () {
+            toggleMusicAndConfetti();
+        };
     </script>
 </body>
 
