@@ -15,10 +15,9 @@
             margin: 0;
             background-color: #1a1a1a;
             text-align: center;
-            overflow: hidden;
             color: #fff;
             font-family: Arial, sans-serif;
-            /* Adding a fallback font */
+            overflow: hidden;
         }
 
         .container {
@@ -28,6 +27,7 @@
             align-items: center;
             height: 100%;
             width: 100%;
+            overflow: auto;
         }
 
         h1 {
@@ -39,7 +39,6 @@
         img {
             width: 90%;
             max-width: 400px;
-            /* Ensure it doesn’t get too large */
             cursor: pointer;
         }
 
@@ -48,7 +47,6 @@
                 transform: translateY(0) rotate(0deg);
                 opacity: 1;
             }
-
             100% {
                 transform: translateY(100vh) rotate(360deg);
                 opacity: 0;
@@ -94,13 +92,11 @@
             from {
                 font-size: 2rem;
             }
-
             to {
                 font-size: 3rem;
             }
         }
 
-        /* Media Queries for iPhone 11 */
         @media (max-width: 414px) {
             h1 {
                 font-size: 2em;
@@ -182,13 +178,14 @@
             }
         }
 
-        window.onload = function () {
-            audio.play().catch(error => console.log("Audio playback failed:", error));
+        function handleInteraction() {
+            audio.muted = false;
+            toggleMusicAndConfetti();
+        }
 
-            document.addEventListener('click', function () {
-                audio.muted = false;
-                toggleMusicAndConfetti();
-            }, { once: true });
+        window.onload = function () {
+            document.addEventListener('click', handleInteraction, { once: true });
+            document.addEventListener('touchstart', handleInteraction, { once: true });
 
             message.style.display = 'none';
             image.style.display = 'none';
